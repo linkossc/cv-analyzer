@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, current_app
 from app.utils.text_extractor import extract_text_from_pdf
 from app.utils.data_cleaner import clean_text
 from app.models.gemini_fallback import gemini_fallback
-from app.models.hf_ner import extract_diplomas  # Now uses Gemini
+from app.models.hf_diploma import extract_diplomas  # Now uses Gemini
 from app.models.hf_skill import extract_skills
 
 main_bp = Blueprint('main', __name__)

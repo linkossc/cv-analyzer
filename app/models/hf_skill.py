@@ -1,19 +1,13 @@
-import google.generativeai as genai
-from app.config import Config
 from app.utils.prompts import SKILL_PROMPT
-
-genai.configure(api_key=Config.GOOGLE_API_KEY)
-model = genai.GenerativeModel('gemini-1.5-pro-latest')
+from app.utils.gemini_utils import generate_and_parse
+import logging
 
 
 def extract_skills(text):
-    try:
-        # Use centralized skill prompt
-        response = model.generate_content(SKILL_PROMPT.format(text=text))
+    """Extract skills using Gemini."""
 
-        # Parse the response into a clean list of skills
-        skills = [skill.strip() for skill in response.text.split(",") if skill.strip()]
-        return skills
-    except Exception as e:
-        logging.error(f"Skill extraction error: {str(e)}")
-        return []
+    def parse_skills(response_text):
+        """Parse skills from the Gemini response."""
+        return [skill.strip() for skill in response_text.split(",") if skill.strip()]
+
+    return generate_and_parse(SKILL_PROMPT, text, parse_skills)
